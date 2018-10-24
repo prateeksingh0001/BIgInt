@@ -41,6 +41,12 @@ int main(){
  	else
  		cout<<"WRONG ANSWER"<<endl ;
 
+ 	int a = x2 > x1 ;
+ 	cout<<a<<endl ;
+
+ 	BigInt sub = x3 - x2 ;
+ 	sub.print() ;
+
  	// BigInt x7("199") ;
  	// BigInt res("1") ;
 

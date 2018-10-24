@@ -1,3 +1,7 @@
+#ifndef BIGINT_H
+#define BIGINT_H
+#endif 	
+
 #include <iostream>
 #include <string.h>
 
@@ -17,6 +21,7 @@ public:
 	BigInt operator + (BigInt);
 	BigInt operator * (BigInt &);
 	BigInt operator - (BigInt);
+	int operator >(BigInt);
 	bool operator == (BigInt);
 
 	void removeLeadingZeros() ;
@@ -106,8 +111,65 @@ BigInt BigInt::operator * (BigInt &num1){
 	return res ;
 }
 
-BigInt BigInt::operator -(BigInt num1){
+int BigInt::operator >(BigInt num1){
+	this->removeLeadingZeros();
+	num1.removeLeadingZeros();
 
+	if (*this == num1)
+		return 0 ;
+	else{
+		if(this->length > num1.length)
+			return 1 ;
+		
+		else if (this->length == num1.length){
+			for(int i=0; i<this->length; i++){
+				if((this->num[i] - '0') > (num1.num[i] - '0'))
+					return 1 ;
+				else if((this->num[i] - '0') < (num1.num[i] - '0'))
+					return -1 ;
+			}
+		}
+		
+		return -1 ;
+	}
+}
+
+BigInt BigInt::operator -(BigInt num1){
+	if (*this == num1){
+		cout<<"I came here first"<<endl ;
+		return BigInt("0");
+	}
+	
+	else if (*this > num1){
+		cout<<"I came here"<<endl ;
+		int borrow = 0;
+		int n = this->length;
+		int result = 0 ;
+
+		string res = "";
+
+		for(int k=0; k<n; k++){
+			if(k >= num1.length){
+				result = (this->num[this->length - 1 - k] - '0') - borrow ;
+				borrow = 0;
+			}
+			else{
+				result = (this->num[this->length - 1 - k] - '0') - (num1.num[num1.length - 1 - k] - '0') - borrow ;
+				if(result < 0){
+					result += 10;
+					borrow = 1 ;
+				}
+				else{
+					 borrow = 0;
+				}
+			}
+			char digit = '0' + result ;
+			res = digit + res ;
+		}
+		return BigInt(res) ;
+	} 
+	else
+		cout<<"Signed numbers not supported.";
 }
 
 int BigInt::makeEqualLength(BigInt &num1){
@@ -134,8 +196,9 @@ void BigInt::removeLeadingZeros(){
 }
 
 bool BigInt::operator == (BigInt num1){
-	if(this->num == num1.num)
+	if(this->num == num1.num){
 		return true;
+	}
 	else 
 		return false;
 }
