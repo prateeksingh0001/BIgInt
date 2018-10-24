@@ -136,12 +136,10 @@ int BigInt::operator >(BigInt num1){
 
 BigInt BigInt::operator -(BigInt num1){
 	if (*this == num1){
-		cout<<"I came here first"<<endl ;
 		return BigInt("0");
 	}
 	
 	else if (*this > num1){
-		cout<<"I came here"<<endl ;
 		int borrow = 0;
 		int n = this->length;
 		int result = 0 ;
