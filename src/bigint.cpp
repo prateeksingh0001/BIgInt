@@ -1,41 +1,13 @@
-#ifndef BIGINT_H
-#define BIGINT_H
-#endif 	
-
-#include <iostream>
-#include <string.h>
-
-using namespace std ;
-
-class BigInt{
-
-	string num ;
-
-public:
-	BigInt();
-	BigInt(string str) ;
-
-	int length;
-	bool isPositive ;
-
-	BigInt operator + (BigInt);
-	BigInt operator * (BigInt &);
-	BigInt operator - (BigInt);
-	int operator >(BigInt);
-	bool operator == (BigInt);
-
-	void removeLeadingZeros() ;
-	int makeEqualLength(BigInt &);
-	void print(){ cout<<num<<endl ;}
-	
-};
+#include "bigint.h"
 
 BigInt::BigInt(){;}
+
 
 BigInt::BigInt(string str1){
 	num = str1;
 	length = num.length() ;
 }
+
 
 BigInt BigInt::operator + (BigInt num1){
 	int carry = 0;
@@ -66,6 +38,8 @@ BigInt BigInt::operator + (BigInt num1){
 	else 
 		return BigInt(res);
 }
+
+
 
 BigInt BigInt::operator * (BigInt &num1){
 	//Uses the recursive KARATSUBA multiplication algorithm
@@ -111,6 +85,8 @@ BigInt BigInt::operator * (BigInt &num1){
 	return res ;
 }
 
+
+
 int BigInt::operator >(BigInt num1){
 	this->removeLeadingZeros();
 	num1.removeLeadingZeros();
@@ -133,6 +109,8 @@ int BigInt::operator >(BigInt num1){
 		return -1 ;
 	}
 }
+
+
 
 BigInt BigInt::operator -(BigInt num1){
 	if (*this == num1){
@@ -170,6 +148,8 @@ BigInt BigInt::operator -(BigInt num1){
 		cout<<"Signed numbers not supported.";
 }
 
+
+
 int BigInt::makeEqualLength(BigInt &num1){
 	int len1 = num1.length ;
 	int len2 = this->length ;
@@ -188,10 +168,14 @@ int BigInt::makeEqualLength(BigInt &num1){
 	}
 }
 
+
+
 void BigInt::removeLeadingZeros(){
 	this->num.erase(0, this->num.find_first_not_of('0'));
 	this->length = this->num.length() ;
 }
+
+
 
 bool BigInt::operator == (BigInt num1){
 	if(this->num == num1.num){
