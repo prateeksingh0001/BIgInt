@@ -1,34 +1,43 @@
 #ifndef BIGINT_H
 #define BIGINT_H
-	
+
+// All variables to be exposed shoudl be done as functions
+// Make a destructor
 
 #include <iostream>
 #include <string>
 
-using namespace std ;
+using namespace std;
 
-class BigInt{
+class BigInt
+{
 
-	string num ;
+    string num;
 
 public:
-	BigInt();
-	BigInt(string str) ;
+    int length();
+    bool isPositive();
 
-	int length;
-	bool isPositive ;
+    BigInt();
+    BigInt(string str);
 
-	BigInt operator + (BigInt);
-	BigInt operator * (BigInt &);
-	BigInt operator - (BigInt);
-	int operator >(BigInt);
-	bool operator == (BigInt);
+    BigInt operator+(BigInt);
+    BigInt operator*(BigInt &);
+    BigInt operator-(BigInt);
+    int operator>(BigInt);
+    bool operator==(BigInt);
 
-	void removeLeadingZeros() ;
-	int makeEqualLength(BigInt &);
-	void print(){ cout<<num<<endl ;}
-	
+    // private
+    void removeLeadingZeros();
+    int makeEqualLength(BigInt &);
+
+    // Implement input and output stream
+    void print()
+    {
+        cout << num << endl;
+    }
+
+    // Radix mantissa
 };
 
-
-#endif 
+#endif
