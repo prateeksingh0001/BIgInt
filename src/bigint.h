@@ -1,7 +1,7 @@
 #ifndef BIGINT_H
 #define BIGINT_H
 
-// All variables to be exposed shoudl be done as functions
+// All variables to be exposed should be done as functions
 // Make a destructor
 
 #include <iostream>
