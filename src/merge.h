@@ -2,41 +2,64 @@
 #define MERGESORT_H
 
 #include <iostream>
-#include <vector>
-#include <utility>
 
-template < typename RandomAccessIterator, typename Compare >
-void mergesort(RandomAccessIterator first, RandomAccessIterator last, Compare comp){
-   
-    size_t n = last - first ;
+/*
+ * The only reason for the signature of the mergesort function having a return
+ * type is bcs for the sake of the assignment we have to count the number of
+ * inversions in the input array
+ *
+ * WARNING: This function expects the data to be ordinal and to follow the basic
+ * operations as they are, i.e. it won't work for strings and other
+ * data-structures yet
+ */
 
-    if (n<=1)
-        return ;
+// TODO: Implement a generic merge-sort with a comparison function that can work
+// it almost any ordinal data structures.
 
-    size_t m = n/2 ;
+template <typename I, typename R>
+R mergesort(I *first, I *last)
+{
 
-    mergesort(first, first+m, comp);
-    mergesort(first+m, last, comp);
+    size_t n = last - first;
 
-    std::vector< std::iterator_traits<RandomAccessIterator>::value_type > v(last-first);
-    RandomAccessIterator itResult = v.begin();
+    if (n <= 1)
+        return 0;
 
-    RandomAccessIterator itLower = first; 
-    RandomAccessIterator itUpper = first + m;
+    R TotalInversions = 0;
+    I m = n / 2;
 
-    while(itLower != first+m && itUpper != last)
-        *(itResult++) = comp(*itLower, *itUpper) ? *(itLower++):*(itUpper++);
+    R LeftSubarrayInversions = mergesort<I, R>(first, first + m);
+    R RightSubarrayInversions = mergesort<I, R>(first + m, last);
 
+    I v[n];
+    I *result = v;
 
-        std::move(itLower, first+m, itResult) ;
-        std::move(itUpper, first+m, itResult) ;
+    I *lower = first;
+    I *upper = lower + m;
 
-    std::move(v.begin(), v.end(), first); 
-}
+    while (lower != first + m && upper != last) {
+        if (*lower < *upper) {
+            *(result++) = *(lower++);
+            continue;
+        }
 
-template < typename RandomAccessIterator >
-void mergesort(RandomAccessIterator first, RandomAccessIterator last){
-    mergesort(first, last, []( std::iterator_traits<RandomAccessIterator>::value_type const& a, std::iterator_triats<RandomAccessIterator>::value_type const& b){ return a < b; });
+        *(result++) = *(upper++);
+        TotalInversions += ((first + m) - lower);
+    }
+
+    while (lower != first + m)
+        *(result++) = *(lower++);
+
+    while (upper != last)
+        *(result++) = *(upper++);
+
+    for (I i = 0; i < n; i++) {
+        *(first + i) = v[i];
+    }
+
+    TotalInversions += LeftSubarrayInversions + RightSubarrayInversions;
+
+    return TotalInversions;
 }
 
 #endif

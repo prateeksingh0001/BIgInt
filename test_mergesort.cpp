@@ -1,25 +1,27 @@
 #include <iostream>
+#include <fstream>
 #include "src/merge.h"
 
-using namespace std ;
+using namespace std;
 
-int main(){
+int main()
+{
 
-    int array[] = {1, 49, 35, 30, 4, 10};
-    int n = sizeof(array)/sizeof(array[0]) ; 
+    int array[100000];
+    fstream int_list;
+    int number;
 
-    cout<<"original array is:"<<endl ;
-    for(int i =0; i<n; i++)
-        cout<<array[i]<<" " ;
-    cout<<endl ;
+    int_list.open("coursera_assignments/integer_list.txt");
 
-    mergesort <int> (*array, *array + n) ;
+    for (int j = 0; j < 100000; j++) {
+        int_list >> number;
+        array[j] = number;
+    }
 
-    for(int i =0; i<n; i++)
-        cout<<array[i]<<"  ";
+    int n = sizeof(array) / sizeof(array[0]);
 
+    long long int inversions = mergesort<int, long long int>(array, array + n);
+
+    cout << endl << "Total number of inversion = " << inversions << endl;
     return 0;
-    
 }
-
-
