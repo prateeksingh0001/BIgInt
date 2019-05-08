@@ -13,8 +13,8 @@
  * data-structures yet
  */
 
-// TODO: Implement a generic merge-sort with a comparison function that can work
-// it almost any ordinal data structures.
+// TODO: *Implement a generic merge-sort with a comparison function that can work it almost any ordinal data structures.
+// * Add const references instead of pointers
 
 template <typename I, typename R>
 R mergesort(I *first, I *last)
@@ -26,7 +26,10 @@ R mergesort(I *first, I *last)
         return 0;
 
     R TotalInversions = 0;
-    I m = n / 2;
+
+    //Need discussion over the datatype of m, int is fine but if the number of 
+    //elements exceed the limit of int we would need a long int or a long long int.
+    int m = n / 2;
 
     R LeftSubarrayInversions = mergesort<I, R>(first, first + m);
     R RightSubarrayInversions = mergesort<I, R>(first + m, last);

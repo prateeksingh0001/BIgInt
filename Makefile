@@ -4,20 +4,24 @@ BUILD_DIR := bin
 
 BIGINT_PROGRAM := test_bigint
 MERGESORT_PROGRAM := test_merge
+QUICKSORT_PROGRAM := test_quicksort
 
 CPPFLAGS = -g -Wall
 
 
-all: build_dir $(BIGINT_PROGRAM) $(MERGESORT_PROGRAM)
+all: build_dir $(BIGINT_PROGRAM) $(MERGESORT_PROGRAM) $(QUICKSORT_PROGRAM)
 
 build_dir:
 	mkdir -p bin/
 
 $(MERGESORT_PROGRAM):
-	$(CC) test_mergesort.cpp -o ./bin/$(MERGESORT_PROGRAM)
+	$(CC) tests/test_mergesort.cpp -o ./bin/$(MERGESORT_PROGRAM)
 
 $(BIGINT_PROGRAM): bigint_exception.o bigint.o test_bigint.o
 	$(CC) bigint.o test_bigint.o -o ./bin/$(BIGINT_PROGRAM) 
+
+$(QUICKSORT_PROGRAM): 
+	$(CC) tests/test_quicksort.cpp -o ./bin/$(QUICKSORT_PROGRAM)
 
 test_merge.o:
 	$(CC) -c $(CPPFLAGS) test_mergesort.cpp -std=c++11

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "src/merge.h"
+#include "../src/merge.h"
 
 using namespace std;
 
