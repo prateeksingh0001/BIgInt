@@ -10,7 +10,6 @@ void swap(T *first, T *second){
     *second = temp;
 }
 
-
 /*
  * With the below templates we are making the assumption that the 
  * datatype for indexing and the return type of the number of 
@@ -18,7 +17,7 @@ void swap(T *first, T *second){
  */
 
 template <typename I, typename R>
-R partition(I *array, R low, R high){
+R partitionWithFirst(I *array, R low, R high){
     
     I pivot = array[low];
     R i = low;
@@ -34,34 +33,83 @@ R partition(I *array, R low, R high){
 }
 
 template <typename I, typename R>
-R quicksort(I *array, R low, R high){
+R partitionWithLast(I *array, R low, R high){
+
+    I pivot = array[high];
+    swap(&array[low], &array[high]);
+    R pivot_position = partitionWithFirst<I, R>(array, low, high);
+
+    return pivot_position;
+}
+
+template <typename I, typename R>
+R partitionWithMedianofThree(I *array, R low, R high){
+
+    R length = high - low + 1;
+    R median_index;
+    R pivot_position;
+
+    if(length%2 == 0)
+        median_index = (length/2)-1;
+    else
+        median_index = length/2;
+
+    median_index += low;
+
+    if((array[low]<=array[median_index] && array[median_index]<=array[high]) || (array[high]<=array[median_index] && array[median_index]<=array[low])){
+        swap(&array[low], &array[median_index]);
+    }
+    else if((array[median_index]<=array[high] && array[high]<=array[low]) || (array[high]<=array[median_index] && array[low]<=array[high])){
+        swap(&array[low], &array[high]);
+    }
+    
+    pivot_position = partitionWithFirst<I, R>(array, low, high);
+
+    return pivot_position;
+}
+
+template <typename I, typename R>
+R quicksort(I *array, R low, R high, char pivot_type='f'){
 
     //std::cout<<"reached here"<<std::endl;
 
     if(high-low+1 <= 1){
         //std::cout<<"diff = "<<(high-low+1)<<std::endl;
-        return high-low+1;
+        return 0;
     }
     else if(low < high){
         R totalComparisons = high-low;
-        R pivot_pos = partition<I, R>(array, low, high);
+        R pivot_pos ;
 
+        switch(pivot_type){
+            case 'f':
+                pivot_pos = partitionWithFirst<I, R>(array, low, high);
+                break;
+            case 'l':
+                pivot_pos = partitionWithLast<I, R>(array, low, high);
+                break;
+            case 'm':
+                pivot_pos = partitionWithMedianofThree<I, R>(array, low, high);
+        }
+        
         /*for(R i=low; i<=high; i++){
             std::cout<<array[i]<<"  ";
         }*/
         //std::cout<<std::endl ;
         //std::cout<<"Pivot position = "<<pivot_pos<<std::endl;   
         
-        return totalComparisons + quicksort<I, R>(array, low, pivot_pos-1) + quicksort<I, R>(array, pivot_pos+1, high);
+        return totalComparisons + quicksort<I, R>(array, low, pivot_pos-1, pivot_type) + quicksort<I, R>(array, pivot_pos+1, high, pivot_type);
     }
 }
 
-/*
-* Made a very in line 49 strong assumption that TotalInversion is of datatype int or of similar types
-* or of size_t, which is very bad and need a good alternative for that.
-*/
 #endif
 
 /*
- * TODO: * Current algo works on the array itself and not a copy of it, should that be done ?
+ * TODO: * Refactor the code so that the arrays work by rearranging the pointers to each element and the not the elements itself.
+ *         This approach has two benefits, first the original array will remain untouched and an array of pointer would be
+ *         independent of the size of the data-structure it is pointing to and hence every element would always occupy same amount
+ *         of space.
+ *
+ *       * Add an argument for the comparison function in the code of both mergesort and quicksort, this would enable this
+ *         of these algos to work with any data structures, as long as a comparison function for those data structures is given.
  */
