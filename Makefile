@@ -37,7 +37,7 @@ bigint.o:
 	$(CC) -c $(CPPFLAGS) src/bigint.cpp -std=c++11
 
 test_bigint.o: 
-	$(CC) -c $(CPPFLAGS) src/test_bigint.cpp -std=c++11
+	$(CC) -c $(CPPFLAGS) tests/test_bigint.cpp -std=c++11
 
 graph.o:
 	$(CC) -c $(CPPFLAGS) src/graph.cpp -std=c++11
