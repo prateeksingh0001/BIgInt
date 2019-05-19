@@ -2,44 +2,37 @@
 #define GRAPH_H
 
 #include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <algorithm>
+#include <random>
+#include <ctime>
 
-class AdjListNode{
-    int dest;
-    AdjListNode *nextNode;
-
-    public:
-    AdjListNode(int destination);
-    friend class Graph;
-
-    void next(AdjListNode *node){ nextNode = node;}
-
-};
-
-class AdjList{
-    AdjListNode *head;
-    
-    public:
-    AdjList(){ head = NULL;}
-    friend class Graph;
-
-    void addAdjListNode(int dest);
-};
 class Graph{
-    int V;
-    AdjList *array;
+    std::vector<int> V;
+    std::unordered_map<int, std::vector<int>> adjList;
 
     public:
-    Graph(int numVertices);
+    Graph(){srand((unsigned)time(NULL));}
 
-    void addEdge(int src, int dest){array[src].addAdjListNode(dest);}
+    void readGraphFromFile(char *fileName);
+    
+    void addEdge(int src, int dest);
+    void addVertex();
+    void removeEdge(int src, int dest);
+    void Contract(int src, int dest);
+    
+    int numVertices(){return adjList.size();}
+
+    int kargerMinCut();
+
     void print();
 };
 
 #endif
 
 /*
- * TODO : * Add an implementation for the destructor that destroys the AdjListNode everytime
- *          an edge is removed from the graph.
+ * TODO : * Also create a way for differentiation between directed and undirected graphs.
  *
- *        * Also implement the graph contraction algorithm from the coursera course.
+ * NOTES : * Basically I have to keep two vectors, one for nodes and the other one for their links.
  */

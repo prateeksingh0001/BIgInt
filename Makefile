@@ -10,22 +10,26 @@ GRAPH_PROGRAM := test_graph
 CPPFLAGS = -g -Wall
 
 
-all: build_dir $(BIGINT_PROGRAM) $(MERGESORT_PROGRAM) $(QUICKSORT_PROGRAM) $(GRAPH_PROGRAM)
+all: build_dir $(BIGINT_PROGRAM) $(MERGESORT_PROGRAM) $(QUICKSORT_PROGRAM) $(GRAPH_PROGRAM) cleanup
 
 build_dir:
 	mkdir -p bin/
 
-$(MERGESORT_PROGRAM):
-	$(CC) tests/test_mergesort.cpp -o ./bin/$(MERGESORT_PROGRAM)
+cleanup:
+	echo "Cleaning up files"
+	rm *.o
 
 $(BIGINT_PROGRAM): bigint_exception.o bigint.o test_bigint.o
 	$(CC) bigint.o test_bigint.o -o ./bin/$(BIGINT_PROGRAM) 
 
+$(GRAPH_PROGRAM): graph.o test_graph.o 
+	$(CC) graph.o test_graph.o -o ./bin/$(GRAPH_PROGRAM)
+
 $(QUICKSORT_PROGRAM): 
 	$(CC) tests/test_quicksort.cpp -o ./bin/$(QUICKSORT_PROGRAM)
 
-$(GRAPH_PROGRAM): graph.o test_graph.o 
-	$(CC) graph.o test_graph.o -o ./bin/$(GRAPH_PROGRAM)
+$(MERGESORT_PROGRAM):
+	$(CC) tests/test_mergesort.cpp -o ./bin/$(MERGESORT_PROGRAM)
 
 test_merge.o:
 	$(CC) -c $(CPPFLAGS) test_mergesort.cpp -std=c++11

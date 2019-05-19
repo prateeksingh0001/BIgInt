@@ -1,6 +1,6 @@
 #include <iostream>
 #include <assert.h>
-#include "bigint.h"
+#include "../src/bigint.h"
 
 using namespace std;
 
